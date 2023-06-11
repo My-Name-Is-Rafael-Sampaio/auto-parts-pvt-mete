@@ -273,90 +273,185 @@ void read_string_input(const char *prompt, char *buffer, int max_length)
   }
 }
 
+void read_field_with_quotes(char *token, char *dest, size_t dest_size)
+{
+  if (token[0] == '"')
+  {
+    memmove(dest, token + 1, strlen(token));
+    dest[strlen(dest) - 1] = '\0';
+  }
+  else
+  {
+    strncpy(dest, token, dest_size - 1);
+  }
+}
+
+void read_field_with_quotes(char *token, char *dest, size_t dest_size)
+{
+  if (token[0] == '"')
+  {
+    memmove(dest, token + 1, strlen(token));
+    dest[strlen(dest) - 1] = '\0';
+  }
+  else
+  {
+    strlcpy(dest, token, dest_size);
+  }
+}
+
+void read_common_data(char *token, void *node)
+{
+  read_field_with_quotes(token, node->full_name, MAX_FULL_NAME_SIZE);
+  token = strtok(NULL, ",");
+  read_field_with_quotes(token, node->date_birth, MAX_DATE_FORMAT_SIZE);
+  token = strtok(NULL, ",");
+  strncpy(node->email_address, token, MAX_EMAIL_ADDRESS_SIZE - 1);
+  token = strtok(NULL, ",");
+  strncpy(node->phone_number, token, MAX_PHONE_NUMBER_SIZE - 1);
+}
+
+void read_collaborator_data(char *token, Collaborator *new_node)
+{
+  new_node->id = atoi(token);
+  token = strtok(NULL, ",");
+  new_node->cpf = atoi(token);
+  token = strtok(NULL, ",");
+  read_common_data(token, new_node);
+  token = strtok(NULL, ",");
+  strncpy(new_node->home_address, token, MAX_HOME_ADDRESS_SIZE - 1);
+  token = strtok(NULL, ",");
+  strncpy(new_node->office, token, MAX_OFFICE_SIZE - 1);
+  token = strtok(NULL, ",");
+  new_node->salary = atof(token);
+  token = strtok(NULL, ",");
+  new_node->total_sales_made = atoi(token);
+}
+
+void read_supplier_data(char *token, Supplier *new_node)
+{
+  new_node->id = atoi(token);
+  token = strtok(NULL, ",");
+  new_node->cnpj = atoi(token);
+  token = strtok(NULL, ",");
+  read_common_data(token, new_node);
+  token = strtok(NULL, ",");
+  read_field_with_quotes(token, new_node->part_category, MAX_PART_CATEGORY_SIZE);
+  token = strtok(NULL, ",");
+  read_field_with_quotes(token, new_node->business_address, MAX_BUSINESS_ADDRESS_SIZE);
+  token = strtok(NULL, ",");
+  read_field_with_quotes(token, new_node->contract_date, MAX_DATE_FORMAT_SIZE);
+  token = strtok(NULL, ",");
+  new_node->contract_price = atof(token);
+}
+
+void read_part_data(char *token, Part *new_node)
+{
+  new_node->id = atoi(token);
+  token = strtok(NULL, ",");
+  new_node->supplier_id = atoi(token);
+  token = strtok(NULL, ",");
+  read_common_data(token, new_node);
+  token = strtok(NULL, ",");
+  read_field_with_quotes(token, new_node->car_model, MAX_CAR_MODEL_SIZE);
+  token = strtok(NULL, ",");
+  new_node->amount = atoi(token);
+  token = strtok(NULL, ",");
+  new_node->price = atof(token);
+}
+
+void read_consumer_data(char *token, Consumer *new_node)
+{
+  new_node->id = atoi(token);
+  token = strtok(NULL, ",");
+  new_node->cpf = atoi(token);
+  token = strtok(NULL, ",");
+  read_common_data(token, new_node);
+  token = strtok(NULL, ",");
+  strncpy(new_node->home_address, token, MAX_HOME_ADDRESS_SIZE - 1);
+}
+
 void read_data_from_file(FILE *file, void **head, int struct_type)
 {
   char line[MAX_FULL_NAME_SIZE + 100];
   while (fgets(line, sizeof(line), file) != NULL)
   {
     void *new_node = NULL;
-
     char *token = strtok(line, ",");
 
-    if (struct_type == 1)
+    switch (struct_type)
     {
+    case 1:
       new_node = create_collaborator_node();
-      new_node->id = atoi(token);
-      token = strtok(NULL, ",");
-      new_node->cpf = atoi(token);
-      token = strtok(NULL, ",");
-      strncpy(new_node->full_name, token, MAX_FULL_NAME_SIZE - 1);
-      if (new_node->full_name[0] == '"')
+      if (new_node != NULL)
       {
-        memmove(new_node->full_name, new_node->full_name + 1,
-                strlen(new_node->full_name));
-        new_node->full_name[strlen(new_node->full_name) - 1] = '\0';
+        read_collaborator_data(token, new_node);
       }
-      token = strtok(NULL, ",");
-      strncpy(new_node->date_birth, token, MAX_DATE_FORMAT_SIZE - 1);
-      if (new_node->date_birth[0] == '"')
-      {
-        memmove(new_node->date_birth, new_node->date_birth + 1,
-                strlen(new_node->date_birth));
-        new_node->date_birth[strlen(new_node->date_birth) - 1] = '\0';
-      }
-      token = strtok(NULL, ",");
-      strncpy(new_node->email_address, token, MAX_EMAIL_ADDRESS_SIZE - 1);
-      if (new_node->email_address[0] == '"')
-      {
-        memmove(new_node->email_address, new_node->email_address + 1,
-                strlen(new_node->email_address));
-        new_node->email_address[strlen(new_node->email_address) - 1] = '\0';
-      }
-      token = strtok(NULL, ",");
-      strncpy(new_node->phone_number, token, MAX_PHONE_NUMBER_SIZE - 1);
-      if (new_node->phone_number[0] == '"')
-      {
-        memmove(new_node->phone_number, new_node->phone_number + 1,
-                strlen(new_node->phone_number));
-        new_node->phone_number[strlen(new_node->phone_number) - 1] = '\0';
-      }
-      token = strtok(NULL, ",");
-      strncpy(new_node->home_address, token, MAX_HOME_ADDRESS_SIZE - 1);
-      if (new_node->home_address[0] == '"')
-      {
-        memmove(new_node->home_address, new_node->home_address + 1,
-                strlen(new_node->home_address));
-        new_node->home_address[strlen(new_node->home_address) - 1] = '\0';
-      }
-      token = strtok(NULL, ",");
-      strncpy(new_node->office, token, MAX_OFFICE_SIZE - 1);
-      if (new_node->office[0] == '"')
-      {
-        memmove(new_node->office, new_node->office + 1,
-                strlen(new_node->office));
-        new_node->office[strlen(new_node->office) - 1] = '\0';
-      }
-      token = strtok(NULL, ",");
-      new_node->salary = atof(token);
-      token = strtok(NULL, ",");
-      new_node->total_sales_made = atoi(token);
-    }
-    else if (struct_type == 2)
-    {
+      break;
+    case 2:
       new_node = create_supplier_node();
-    }
-    else if (struct_type == 3)
-    {
+      if (new_node != NULL)
+      {
+        read_supplier_data(token, new_node);
+      }
+      break;
+    case 3:
       new_node = create_part_node();
-    }
-    else if (struct_type == 4)
-    {
+      if (new_node != NULL)
+      {
+        read_part_data(token, new_node);
+      }
+      break;
+    case 4:
       new_node = create_consumer_node();
+      if (new_node != NULL)
+      {
+        read_consumer_data(token, new_node);
+      }
+      break;
     }
 
-    insert_node(head, new_node, struct_type);
+    if (new_node != NULL)
+    {
+      insert_node(head, new_node, struct_type);
+    }
   }
 }
+
+void save_collaborator_data(FILE *file, const Collaborator *collaborator)
+{
+  fprintf(file, "%d,%d,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",%.2f,%d\n",
+          collaborator->id, collaborator->cpf, collaborator->full_name,
+          collaborator->date_birth, collaborator->email_address,
+          collaborator->phone_number, collaborator->home_address,
+          collaborator->office, collaborator->salary,
+          collaborator->total_sales_made);
+}
+
+void save_supplier_data(FILE *file, const Supplier *supplier)
+{
+  fprintf(file, "%d,%d,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",%.2f\n",
+          supplier->id, supplier->cnpj, supplier->full_name,
+          supplier->part_category, supplier->email_address,
+          supplier->phone_number, supplier->business_address,
+          supplier->contract_date, supplier->contract_price);
+}
+
+void save_part_data(FILE *file, const Part *part)
+{
+  fprintf(file, "%d,%d,\"%s\",\"%s\",%d,%.2f\n",
+          part->id, part->supplier_id, part->full_name,
+          part->car_model, part->amount, part->price);
+}
+
+void save_consumer_data(FILE *file, const Consumer *consumer)
+{
+  fprintf(file, "%d,%d,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"\n",
+          consumer->id, consumer->cpf, consumer->full_name,
+          consumer->date_birth, consumer->email_address,
+          consumer->phone_number, consumer->home_address);
+}
+
+// function save_entity_data_to_file here
 
 int main(void)
 {
