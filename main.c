@@ -75,7 +75,7 @@ Collaborator *create_collaborator_node()
   Collaborator *node = (Collaborator *)malloc(sizeof(Collaborator));
   if (node == NULL)
   {
-    printf("Erro ao alocar memória para collaborator/colaborador!\n");
+    printf("Erro ao alocar memória para colaborador!\n");
     exit(1);
   }
   node->next = NULL;
@@ -87,7 +87,7 @@ Supplier *create_supplier_node()
   Supplier *node = (Supplier *)malloc(sizeof(Supplier));
   if (node == NULL)
   {
-    printf("Erro ao alocar memória para supplie/fornecedor!\n");
+    printf("Erro ao alocar memória para fornecedor!\n");
     exit(1);
   }
   node->next = NULL;
@@ -99,7 +99,7 @@ Part *create_part_node()
   Part *node = (Part *)malloc(sizeof(Part));
   if (node == NULL)
   {
-    printf("Erro ao alocar memória para part/peça!\n");
+    printf("Erro ao alocar memória para peça!\n");
     exit(1);
   }
   node->next = NULL;
@@ -111,7 +111,7 @@ Consumer *create_consumer_node()
   Consumer *node = (Consumer *)malloc(sizeof(Consumer));
   if (node == NULL)
   {
-    printf("Erro ao alocar memória para consumer/cliente!\n");
+    printf("Erro ao alocar memória para cliente!\n");
     exit(1);
   }
   node->next = NULL;
@@ -188,25 +188,25 @@ void insert_consumer_in_list(Consumer **head, Consumer *new_consumer)
 
 void print_collaborator_details(const Collaborator *collaborator, int index)
 {
-  printf("\n%d° Collaborator/Colaborador:\n", (index + 1));
+  printf("\n%d° Colaborador:\n", (index + 1));
   printf("ID -> %d\nCPF -> %d\nNome Completo -> %s\nData de Nascimento -> %s\nE-mail -> %s\nTelefone de Contato -> %s\nEndereço Residencial -> %s\nCargo -> %s\nSalário -> %.2f\nTotal de Vendas -> %d\n", collaborator->id, collaborator->cpf, collaborator->full_name, collaborator->date_birth, collaborator->email_address, collaborator->phone_number, collaborator->home_address, collaborator->office, collaborator->salary, collaborator->total_sales_made);
 }
 
 void print_supplier_details(const Supplier *supplier, int index)
 {
-  printf("\n%d° Supplier/Fornecedor:\n", (index + 1));
+  printf("\n%d° Fornecedor:\n", (index + 1));
   printf("ID -> %d\nCNPJ -> %d\nNome Completo -> %s\nCategoria da Peça -> %s\nE-mail -> %s\nTelefone de Contato -> %s\nEndereço Comercial -> %s\nData de Contrato -> %s\nPreço do Contrato -> %.2f\n", supplier->id, supplier->cnpj, supplier->full_name, supplier->part_category, supplier->email_address, supplier->phone_number, supplier->business_address, supplier->contract_date, supplier->contract_price);
 }
 
 void print_part_details(const Part *part, int index)
 {
-  printf("\n%d° Part/Peça:\n", (index + 1));
+  printf("\n%d° Peça:\n", (index + 1));
   printf("ID -> %d\nID do Fornecedor -> %d\nNome Completo -> %s\nModelo do Carro -> %s\nQuantidade -> %d\nPreço -> %.2f\n", part->id, part->supplier_id, part->full_name, part->car_model, part->amount, part->price);
 }
 
 void print_consumer_details(const Consumer *consumer, int index)
 {
-  printf("\n%d° Consumer/Cliente:\n", (index + 1));
+  printf("\n%d° Cliente:\n", (index + 1));
   printf("ID -> %d\nCPF -> %d\nNome Completo -> %s\nData de Nascimento -> %s\nE-mail -> %s\nTelefone de Contato -> %s\nEndereço Residencial -> %s\n", consumer->id, consumer->cpf, consumer->full_name, consumer->date_birth, consumer->email_address, consumer->phone_number, consumer->home_address);
 }
 
@@ -214,13 +214,13 @@ void list_all_collaborators(const Collaborator *head)
 {
   if (head == NULL)
   {
-    printf("\nO arquivo está vazio e/ou nenhum collaborator/colaborador foi cadastrado.\n");
+    printf("\nO arquivo está vazio e/ou nenhum colaborador foi cadastrado.\n");
     return;
   }
 
   int index = 0;
   const Collaborator *current = head;
-  printf("\n----- DADOS DOS COLLABORATORS/COLABORADORES -----\n");
+  printf("\n----- DADOS DOS COLABORADORES -----\n");
   while (current != NULL)
   {
     print_collaborator_details(current, index);
@@ -233,12 +233,12 @@ void list_all_suppliers(const Supplier *head)
 {
   if (head == NULL)
   {
-    printf("\nO arquivo está vazio e/ou nenhum supplier/fornecedor foi cadastrado.\n");
+    printf("\nO arquivo está vazio e/ou nenhum fornecedor foi cadastrado.\n");
     return;
   }
   int index = 0;
   const Supplier *current = head;
-  printf("\n----- DADOS DOS SUPPLIERS/FORNECEDORES -----\n");
+  printf("\n----- DADOS DOS FORNECEDORES -----\n");
   while (current != NULL)
   {
     print_supplier_details(current, index);
@@ -251,12 +251,12 @@ void list_all_parts(const Part *head)
 {
   if (head == NULL)
   {
-    printf("\nO arquivo está vazio e/ou nenhum part/peça foi cadastrado.\n");
+    printf("\nO arquivo está vazio e/ou nenhum peça foi cadastrado.\n");
     return;
   }
   int index = 0;
   const Part *current = head;
-  printf("\n----- DADOS DOS PARTS/PEÇAS -----\n");
+  printf("\n----- DADOS DOS PEÇAS -----\n");
   while (current != NULL)
   {
     print_part_details(current, index);
@@ -269,12 +269,12 @@ void list_all_consumers(const Consumer *head)
 {
   if (head == NULL)
   {
-    printf("\nO arquivo está vazio e/ou nenhum consumer/cliente foi cadastrado.\n");
+    printf("\nO arquivo está vazio e/ou nenhum cliente foi cadastrado.\n");
     return;
   }
   int index = 0;
   const Consumer *current = head;
-  printf("\n----- DADOS DOS CONSUMERS/CLIENTES -----\n");
+  printf("\n----- DADOS DOS CLIENTES -----\n");
   while (current != NULL)
   {
     print_consumer_details(current, index);
@@ -341,22 +341,22 @@ Consumer *find_consumer_by_id(Consumer *head, int id)
 
 void save_collaborator_data(FILE *file, const Collaborator *collaborator)
 {
-  fprintf(file, "%d, %d,\"%s\",\"%s\",\"%s\", \"%s\", \"%s\", \"%s\",%.2f, %d\n", collaborator->id, collaborator->cpf, collaborator->full_name, collaborator->date_birth, collaborator->email_address, collaborator->phone_number, collaborator->home_address, collaborator->office, collaborator->salary, collaborator->total_sales_made);
+  fprintf(file, "%d,%d,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",%.2f,%d\n", collaborator->id, collaborator->cpf, collaborator->full_name, collaborator->date_birth, collaborator->email_address, collaborator->phone_number, collaborator->home_address, collaborator->office, collaborator->salary, collaborator->total_sales_made);
 }
 
 void save_supplier_data(FILE *file, const Supplier *supplier)
 {
-  fprintf(file, "%d, %d,\"%s\",\"%s\",\"%s\", \"%s\", \"%s\", \"%s\",%.2f\n", supplier->id, supplier->cnpj, supplier->full_name, supplier->part_category, supplier->email_address, supplier->phone_number, supplier->business_address, supplier->contract_date, supplier->contract_price);
+  fprintf(file, "%d,%d,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",%.2f\n", supplier->id, supplier->cnpj, supplier->full_name, supplier->part_category, supplier->email_address, supplier->phone_number, supplier->business_address, supplier->contract_date, supplier->contract_price);
 }
 
 void save_part_data(FILE *file, const Part *part)
 {
-  fprintf(file, "%d, %d,\"%s\",\"%s\", %d, %.2f\n", part->id, part->supplier_id, part->full_name, part->car_model, part->amount, part->price);
+  fprintf(file, "%d,%d,\"%s\",\"%s\",%d,%.2f\n", part->id, part->supplier_id, part->full_name, part->car_model, part->amount, part->price);
 }
 
 void save_consumer_data(FILE *file, const Consumer *consumer)
 {
-  fprintf(file, "%d, %d,\"%s\",\"%s\",\"%s\", \"%s\", \"%s\"\n", consumer->id, consumer->cpf, consumer->full_name, consumer->date_birth, consumer->email_address, consumer->phone_number, consumer->home_address);
+  fprintf(file, "%d,%d,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"\n", consumer->id, consumer->cpf, consumer->full_name, consumer->date_birth, consumer->email_address, consumer->phone_number, consumer->home_address);
 }
 
 void save_collaborator_data_to_file(const char *file_path, const Collaborator *head)
@@ -371,11 +371,11 @@ void save_collaborator_data_to_file(const char *file_path, const Collaborator *h
       current = current->next;
     }
     fclose(output_file);
-    printf("\nDados dos collaborators/colaboradores salvos com sucesso no arquivo!\n");
+    printf("\nDados dos colaboradores salvos com sucesso no arquivo!\n");
   }
   else
   {
-    printf("Erro ao abrir o arquivo para salvar os dados dos collaborators/colaboradores.\n\n");
+    printf("Erro ao abrir o arquivo para salvar os dados dos colaboradores.\n\n");
   }
 }
 
@@ -391,11 +391,11 @@ void save_supplier_data_to_file(const char *file_path, const Supplier *head)
       current = current->next;
     }
     fclose(output_file);
-    printf("\nDados dos suppliers/fornecedores salvos com sucesso no arquivo!\n");
+    printf("\nDados dos fornecedores salvos com sucesso no arquivo!\n");
   }
   else
   {
-    printf("Erro ao abrir o arquivo para salvar os dados dos suppliers/fornecedores.\n\n");
+    printf("Erro ao abrir o arquivo para salvar os dados dos fornecedores.\n\n");
   }
 }
 
@@ -411,11 +411,11 @@ void save_part_data_to_file(const char *file_path, const Part *head)
       current = current->next;
     }
     fclose(output_file);
-    printf("\nDados dos parts/peças salvos com sucesso no arquivo!\n");
+    printf("\nDados dos peças salvos com sucesso no arquivo!\n");
   }
   else
   {
-    printf("Erro ao abrir o arquivo para salvar os dados dos parts/peças.\n\n");
+    printf("Erro ao abrir o arquivo para salvar os dados dos peças.\n\n");
   }
 }
 
@@ -431,11 +431,11 @@ void save_consumer_data_to_file(const char *file_path, const Consumer *head)
       current = current->next;
     }
     fclose(output_file);
-    printf("\nDados dos consumers/clientes salvos com sucesso no arquivo!\n");
+    printf("\nDados dos clientes salvos com sucesso no arquivo!\n");
   }
   else
   {
-    printf("Erro ao abrir o arquivo para salvar os dados dos consumers/clientes.\n\n");
+    printf("Erro ao abrir o arquivo para salvar os dados dos clientes.\n\n");
   }
 }
 
@@ -615,44 +615,44 @@ void modify_collaborator_data(Collaborator *collaborator)
     printf("\nModificação cancelada.\n");
     break;
   case 1:
-    collaborator->cpf = read_integer_input_cpf("\nCPF do collaborator/colaborador: ", 0, 99999999999);
+    collaborator->cpf = read_integer_input_cpf("\nCPF do colaborador: ", 0, 99999999999);
     printf("CPF modificado com sucesso!\n");
   case 2:
-    read_string_input("\nNome completo do collaborator/colaborador: ", collaborator->full_name,
+    read_string_input("\nNome completo do colaborador: ", collaborator->full_name,
                       MAX_FULL_NAME_SIZE);
     printf("Nome modificado com sucesso!\n");
     break;
   case 3:
-    read_string_input("\nData de nascimento do collaborator/colaborador: ", collaborator->date_birth,
+    read_string_input("\nData de nascimento do colaborador: ", collaborator->date_birth,
                       MAX_DATE_FORMAT_SIZE);
     printf("Data de nascimento modificada com sucesso!\n");
     break;
   case 4:
-    read_string_input("\nE-mail do collaborator/colaborador: ", collaborator->email_address,
+    read_string_input("\nE-mail do colaborador: ", collaborator->email_address,
                       MAX_EMAIL_ADDRESS_SIZE);
     printf("E-mail modificado com sucesso!\n");
     break;
   case 5:
-    read_string_input("\nTelefone de contato do collaborator/colaborador: ", collaborator->phone_number,
+    read_string_input("\nTelefone de contato do colaborador: ", collaborator->phone_number,
                       MAX_PHONE_NUMBER_SIZE);
     printf("Telefone de contato modificado com sucesso!\n");
     break;
   case 6:
-    read_string_input("\nEndereço residencial do collaborator/colaborador: ", collaborator->home_address,
+    read_string_input("\nEndereço residencial do colaborador: ", collaborator->home_address,
                       MAX_HOME_ADDRESS_SIZE);
     printf("Endereço residencial modificado com sucesso!\n");
     break;
   case 7:
-    read_string_input("\nCargo do collaborator/colaborador: ", collaborator->home_address,
+    read_string_input("\nCargo do colaborador: ", collaborator->home_address,
                       MAX_OFFICE_SIZE);
     printf("Cargo modificado com sucesso!\n");
     break;
   case 8:
-    collaborator->salary = read_double_input("\nSalário do collaborator/colaborador: ", 0.0, 99999.99);
+    collaborator->salary = read_double_input("\nSalário do colaborador: ", 0.0, 99999.99);
     printf("Salário modificado com sucesso!\n");
     break;
   case 9:
-    collaborator->total_sales_made = read_integer_input("Total de vendas do collaborator/colaborador: ", 0, 99999);
+    collaborator->total_sales_made = read_integer_input("Total de vendas do colaborador: ", 0, 99999);
     printf("Total de vendas modificada com sucesso!\n");
     break;
   default:
@@ -682,10 +682,10 @@ void modify_supplier_data(Supplier *supplier)
     printf("\nModificação cancelada.\n");
     break;
   case 1:
-    supplier->cnpj = read_integer_input_cnpj("\nCNPJ do supplier/fornecedor: ", 0, 99999999999999);
+    supplier->cnpj = read_integer_input_cnpj("\nCNPJ do fornecedor: ", 0, 99999999999999);
     printf("CNPJ modificado com sucesso!\n");
   case 2:
-    read_string_input("\nNome completo do supplier/fornecedor: ", supplier->full_name,
+    read_string_input("\nNome completo do fornecedor: ", supplier->full_name,
                       MAX_FULL_NAME_SIZE);
     printf("Nome modificado com sucesso!\n");
     break;
@@ -695,27 +695,27 @@ void modify_supplier_data(Supplier *supplier)
     printf("Categoria da peça modificada com sucesso!\n");
     break;
   case 4:
-    read_string_input("\nE-mail do supplier/fornecedor: ", supplier->email_address,
+    read_string_input("\nE-mail do fornecedor: ", supplier->email_address,
                       MAX_EMAIL_ADDRESS_SIZE);
     printf("E-mail modificado com sucesso!\n");
     break;
   case 5:
-    read_string_input("\nTelefone de contato do supplier/fornecedor: ", supplier->phone_number,
+    read_string_input("\nTelefone de contato do fornecedor: ", supplier->phone_number,
                       MAX_PHONE_NUMBER_SIZE);
     printf("Telefone de contato modificado com sucesso!\n");
     break;
   case 6:
-    read_string_input("\nEndereço comercial do supplier/fornecedor: ", supplier->business_address,
+    read_string_input("\nEndereço comercial do fornecedor: ", supplier->business_address,
                       MAX_BUSINESS_ADDRESS_SIZE);
     printf("Endereço comercial modificado com sucesso!\n");
     break;
   case 7:
-    read_string_input("\nData do contrato do supplier/fornecedor: ", supplier->contract_date,
+    read_string_input("\nData do contrato do fornecedor: ", supplier->contract_date,
                       MAX_DATE_FORMAT_SIZE);
     printf("Data do contrato modificada com sucesso!\n");
     break;
   case 8:
-    supplier->contract_price = read_double_input("\nPreço do contrato do supplier/fornecedor: ", 0.0, 99999.99);
+    supplier->contract_price = read_double_input("\nPreço do contrato do fornecedor: ", 0.0, 99999.99);
     printf("Preço do contrato modificado com sucesso!\n");
     break;
   default:
@@ -731,7 +731,7 @@ void modify_part_data(Part *part, Supplier *supplier_head)
   int supplier_id;
 
   printf("\nOpções de modificação:\n");
-  printf("1 - ID do Supplier/Fornecedor\n");
+  printf("1 - ID do fornecedor\n");
   printf("2 - Nome\n");
   printf("3 - Modelo do Carro\n");
   printf("4 - Quantidade\n");
@@ -748,22 +748,22 @@ void modify_part_data(Part *part, Supplier *supplier_head)
   case 1:
     do
     {
-      supplier_id = read_integer_input("\nID do supplier/fornecedor: ", 0, 999);
+      supplier_id = read_integer_input("\nID do fornecedor: ", 0, 999);
       existing_supplier = find_supplier_by_id(supplier_head, supplier_id);
 
       if (existing_supplier != NULL)
       {
         part->supplier_id = supplier_id;
-        printf("ID do supplier/fornecedor modificado com sucesso!\n");
+        printf("ID do fornecedor modificado com sucesso!\n");
       }
       else
       {
-        printf("\nID do supplier/fornecedor informado não existe. A lista de supplier/fornecedor está vazia ou o arquivo supplier.txt não foi carregado. Insira um ID existente ou cadastre um supplier/fornecedor\n");
+        printf("\nID do fornecedor informado não existe. A lista de fornecedor está vazia ou o arquivo supplier.txt não foi carregado. Insira um ID existente ou cadastre um fornecedor\n");
       }
     } while (existing_supplier == NULL);
     break;
   case 2:
-    read_string_input("\nNome da part/peça: ", part->full_name,
+    read_string_input("\nNome da peça: ", part->full_name,
                       MAX_FULL_NAME_SIZE);
     printf("Nome modificado com sucesso!\n");
     break;
@@ -805,31 +805,31 @@ void modify_consumer_data(Consumer *consumer)
     printf("\nModificação cancelada.\n");
     break;
   case 1:
-    consumer->cpf = read_integer_input_cpf("\nCPF do consumer/cliente: ", 0, 99999999999);
+    consumer->cpf = read_integer_input_cpf("\nCPF do cliente: ", 0, 99999999999);
     printf("CPF modificado com sucesso!\n");
     break;
   case 2:
-    read_string_input("\nNome do consumer/cliente: ", consumer->full_name,
+    read_string_input("\nNome do cliente: ", consumer->full_name,
                       MAX_FULL_NAME_SIZE);
     printf("Nome modificado com sucesso!\n");
     break;
   case 3:
-    read_string_input("\nData de nascimento do consumer/cliente: ", consumer->date_birth,
+    read_string_input("\nData de nascimento do cliente: ", consumer->date_birth,
                       MAX_DATE_FORMAT_SIZE);
     printf("Data de nascimento modificada com sucesso!\n");
     break;
   case 4:
-    read_string_input("\nE-mail do consumer/cliente: ", consumer->email_address,
+    read_string_input("\nE-mail do cliente: ", consumer->email_address,
                       MAX_EMAIL_ADDRESS_SIZE);
     printf("E-mail modificado com sucesso!\n");
     break;
   case 5:
-    read_string_input("\nTelefone de contato do consumer/cliente: ", consumer->phone_number,
+    read_string_input("\nTelefone de contato do cliente: ", consumer->phone_number,
                       MAX_PHONE_NUMBER_SIZE);
     printf("Telefone de contato modificado com sucesso!\n");
     break;
   case 6:
-    read_string_input("\nEndereço residencial do consumer/cliente: ", consumer->home_address,
+    read_string_input("\nEndereço residencial do cliente: ", consumer->home_address,
                       MAX_HOME_ADDRESS_SIZE);
     printf("Endereço residencial modificado com sucesso!\n");
     break;
@@ -943,6 +943,15 @@ int is_file_empty(const char *file_path)
   return is_empty;
 }
 
+void remove_quotes(char *str)
+{
+  if (str[0] == '"')
+  {
+    memmove(str, str + 1, strlen(str));
+    str[strlen(str) - 1] = '\0';
+  }
+}
+
 void read_data_collaborators_file(FILE *file, Collaborator **head)
 {
   char line[MAX_FILE_LINE_SIZE + 100];
@@ -958,58 +967,34 @@ void read_data_collaborators_file(FILE *file, Collaborator **head)
     new_collaborator->cpf = atoi(token);
 
     token = strtok(NULL, ",");
+    remove_quotes(token);
     strncpy(new_collaborator->full_name, token, MAX_FULL_NAME_SIZE - 1);
-    if (new_collaborator->full_name[0] == '"')
-    {
-      memmove(new_collaborator->full_name, new_collaborator->full_name + 1,
-              strlen(new_collaborator->full_name));
-      new_collaborator->full_name[strlen(new_collaborator->full_name) - 1] = '\0';
-    }
+    new_collaborator->full_name[MAX_FULL_NAME_SIZE - 1] = '\0';
 
     token = strtok(NULL, ",");
+    remove_quotes(token);
     strncpy(new_collaborator->date_birth, token, MAX_DATE_FORMAT_SIZE - 1);
-    if (new_collaborator->date_birth[0] == '"')
-    {
-      memmove(new_collaborator->date_birth, new_collaborator->date_birth + 1,
-              strlen(new_collaborator->date_birth));
-      new_collaborator->date_birth[strlen(new_collaborator->date_birth) - 1] = '\0';
-    }
+    new_collaborator->date_birth[MAX_DATE_FORMAT_SIZE - 1] = '\0';
 
     token = strtok(NULL, ",");
+    remove_quotes(token);
     strncpy(new_collaborator->email_address, token, MAX_EMAIL_ADDRESS_SIZE - 1);
-    if (new_collaborator->email_address[0] == '"')
-    {
-      memmove(new_collaborator->email_address, new_collaborator->email_address + 1,
-              strlen(new_collaborator->email_address));
-      new_collaborator->email_address[strlen(new_collaborator->email_address) - 1] = '\0';
-    }
+    new_collaborator->email_address[MAX_EMAIL_ADDRESS_SIZE - 1] = '\0';
 
     token = strtok(NULL, ",");
+    remove_quotes(token);
     strncpy(new_collaborator->phone_number, token, MAX_PHONE_NUMBER_SIZE - 1);
-    if (new_collaborator->phone_number[0] == '"')
-    {
-      memmove(new_collaborator->phone_number, new_collaborator->phone_number + 1,
-              strlen(new_collaborator->phone_number));
-      new_collaborator->phone_number[strlen(new_collaborator->phone_number) - 1] = '\0';
-    }
+    new_collaborator->phone_number[MAX_PHONE_NUMBER_SIZE - 1] = '\0';
 
     token = strtok(NULL, ",");
+    remove_quotes(token);
     strncpy(new_collaborator->home_address, token, MAX_HOME_ADDRESS_SIZE - 1);
-    if (new_collaborator->home_address[0] == '"')
-    {
-      memmove(new_collaborator->home_address, new_collaborator->home_address + 1,
-              strlen(new_collaborator->home_address));
-      new_collaborator->home_address[strlen(new_collaborator->home_address) - 1] = '\0';
-    }
+    new_collaborator->home_address[MAX_HOME_ADDRESS_SIZE - 1] = '\0';
 
     token = strtok(NULL, ",");
+    remove_quotes(token);
     strncpy(new_collaborator->office, token, MAX_OFFICE_SIZE - 1);
-    if (new_collaborator->office[0] == '"')
-    {
-      memmove(new_collaborator->office, new_collaborator->office + 1,
-              strlen(new_collaborator->office));
-      new_collaborator->office[strlen(new_collaborator->office) - 1] = '\0';
-    }
+    new_collaborator->office[MAX_OFFICE_SIZE - 1] = '\0';
 
     token = strtok(NULL, ",");
     new_collaborator->salary = atof(token);
@@ -1036,58 +1021,34 @@ void read_data_suppliers_file(FILE *file, Supplier **head)
     new_supplier->cnpj = atoi(token);
 
     token = strtok(NULL, ",");
+    remove_quotes(token);
     strncpy(new_supplier->full_name, token, MAX_FULL_NAME_SIZE - 1);
-    if (new_supplier->full_name[0] == '"')
-    {
-      memmove(new_supplier->full_name, new_supplier->full_name + 1,
-              strlen(new_supplier->full_name));
-      new_supplier->full_name[strlen(new_supplier->full_name) - 1] = '\0';
-    }
+    new_supplier->full_name[MAX_FULL_NAME_SIZE - 1] = '\0';
 
     token = strtok(NULL, ",");
+    remove_quotes(token);
     strncpy(new_supplier->part_category, token, MAX_PART_CATEGORY_SIZE - 1);
-    if (new_supplier->part_category[0] == '"')
-    {
-      memmove(new_supplier->part_category, new_supplier->part_category + 1,
-              strlen(new_supplier->part_category));
-      new_supplier->part_category[strlen(new_supplier->part_category) - 1] = '\0';
-    }
+    new_supplier->part_category[MAX_PART_CATEGORY_SIZE - 1] = '\0';
 
     token = strtok(NULL, ",");
+    remove_quotes(token);
     strncpy(new_supplier->email_address, token, MAX_EMAIL_ADDRESS_SIZE - 1);
-    if (new_supplier->email_address[0] == '"')
-    {
-      memmove(new_supplier->email_address, new_supplier->email_address + 1,
-              strlen(new_supplier->email_address));
-      new_supplier->email_address[strlen(new_supplier->email_address) - 1] = '\0';
-    }
+    new_supplier->email_address[MAX_EMAIL_ADDRESS_SIZE - 1] = '\0';
 
     token = strtok(NULL, ",");
+    remove_quotes(token);
     strncpy(new_supplier->phone_number, token, MAX_PHONE_NUMBER_SIZE - 1);
-    if (new_supplier->phone_number[0] == '"')
-    {
-      memmove(new_supplier->phone_number, new_supplier->phone_number + 1,
-              strlen(new_supplier->phone_number));
-      new_supplier->phone_number[strlen(new_supplier->phone_number) - 1] = '\0';
-    }
+    new_supplier->phone_number[MAX_PHONE_NUMBER_SIZE - 1] = '\0';
 
     token = strtok(NULL, ",");
+    remove_quotes(token);
     strncpy(new_supplier->business_address, token, MAX_BUSINESS_ADDRESS_SIZE - 1);
-    if (new_supplier->business_address[0] == '"')
-    {
-      memmove(new_supplier->business_address, new_supplier->business_address + 1,
-              strlen(new_supplier->business_address));
-      new_supplier->business_address[strlen(new_supplier->business_address) - 1] = '\0';
-    }
+    new_supplier->business_address[MAX_BUSINESS_ADDRESS_SIZE - 1] = '\0';
 
     token = strtok(NULL, ",");
+    remove_quotes(token);
     strncpy(new_supplier->contract_date, token, MAX_DATE_FORMAT_SIZE - 1);
-    if (new_supplier->contract_date[0] == '"')
-    {
-      memmove(new_supplier->contract_date, new_supplier->contract_date + 1,
-              strlen(new_supplier->contract_date));
-      new_supplier->contract_date[strlen(new_supplier->contract_date) - 1] = '\0';
-    }
+    new_supplier->contract_date[MAX_DATE_FORMAT_SIZE - 1] = '\0';
 
     token = strtok(NULL, ",");
     new_supplier->contract_price = atof(token);
@@ -1111,22 +1072,14 @@ void read_data_parts_file(FILE *file, Part **head)
     new_part->supplier_id = atoi(token);
 
     token = strtok(NULL, ",");
+    remove_quotes(token);
     strncpy(new_part->full_name, token, MAX_FULL_NAME_SIZE - 1);
-    if (new_part->full_name[0] == '"')
-    {
-      memmove(new_part->full_name, new_part->full_name + 1,
-              strlen(new_part->full_name));
-      new_part->full_name[strlen(new_part->full_name) - 1] = '\0';
-    }
+    new_part->full_name[MAX_FULL_NAME_SIZE - 1] = '\0';
 
     token = strtok(NULL, ",");
+    remove_quotes(token);
     strncpy(new_part->car_model, token, MAX_CAR_MODEL_SIZE - 1);
-    if (new_part->car_model[0] == '"')
-    {
-      memmove(new_part->car_model, new_part->car_model + 1,
-              strlen(new_part->car_model));
-      new_part->car_model[strlen(new_part->car_model) - 1] = '\0';
-    }
+    new_part->car_model[MAX_CAR_MODEL_SIZE - 1] = '\0';
 
     token = strtok(NULL, ",");
     new_part->amount = atoi(token);
@@ -1153,50 +1106,29 @@ void read_data_consumers_file(FILE *file, Consumer **head)
     new_consumer->cpf = atoi(token);
 
     token = strtok(NULL, ",");
+    remove_quotes(token);
     strncpy(new_consumer->full_name, token, MAX_FULL_NAME_SIZE - 1);
-    if (new_consumer->full_name[0] == '"')
-    {
-      memmove(new_consumer->full_name, new_consumer->full_name + 1,
-              strlen(new_consumer->full_name));
-      new_consumer->full_name[strlen(new_consumer->full_name) - 1] = '\0';
-    }
+    new_consumer->full_name[MAX_FULL_NAME_SIZE - 1] = '\0';
 
     token = strtok(NULL, ",");
+    remove_quotes(token);
     strncpy(new_consumer->date_birth, token, MAX_DATE_FORMAT_SIZE - 1);
-    if (new_consumer->date_birth[0] == '"')
-    {
-      memmove(new_consumer->date_birth, new_consumer->date_birth + 1,
-              strlen(new_consumer->date_birth));
-      new_consumer->date_birth[strlen(new_consumer->date_birth) - 1] = '\0';
-    }
+    new_consumer->date_birth[MAX_DATE_FORMAT_SIZE - 1] = '\0';
 
     token = strtok(NULL, ",");
+    remove_quotes(token);
     strncpy(new_consumer->email_address, token, MAX_EMAIL_ADDRESS_SIZE - 1);
-    if (new_consumer->email_address[0] == '"')
-    {
-      memmove(new_consumer->email_address, new_consumer->email_address + 1,
-              strlen(new_consumer->email_address));
-      new_consumer->email_address[strlen(new_consumer->email_address) - 1] = '\0';
-    }
+    new_consumer->email_address[MAX_EMAIL_ADDRESS_SIZE - 1] = '\0';
 
     token = strtok(NULL, ",");
+    remove_quotes(token);
     strncpy(new_consumer->phone_number, token, MAX_PHONE_NUMBER_SIZE - 1);
-    if (new_consumer->phone_number[0] == '"')
-    {
-      memmove(new_consumer->phone_number, new_consumer->phone_number + 1,
-              strlen(new_consumer->phone_number));
-      new_consumer->phone_number[strlen(new_consumer->phone_number) - 1] = '\0';
-    }
+    new_consumer->phone_number[MAX_PHONE_NUMBER_SIZE - 1] = '\0';
 
     token = strtok(NULL, ",");
-
+    remove_quotes(token);
     strncpy(new_consumer->home_address, token, MAX_HOME_ADDRESS_SIZE - 1);
-    if (new_consumer->home_address[0] == '"')
-    {
-      memmove(new_consumer->home_address, new_consumer->home_address + 1,
-              strlen(new_consumer->home_address));
-      new_consumer->home_address[strlen(new_consumer->home_address) - 1] = '\0';
-    }
+    new_consumer->home_address[MAX_HOME_ADDRESS_SIZE - 1] = '\0';
 
     insert_consumer_in_list(head, new_consumer);
   }
@@ -1813,10 +1745,7 @@ int main(void)
       case 1:
         if (collaborator_head != NULL)
         {
-          if (strlen(collaborators_file_relative_path) > 0)
-          {
-            read_string_input("\nInforme o caminho relativo no qual o arquivo com os dados dos colaboradores será salvo: ", collaborators_file_relative_path, MAX_RELATIVE_PATH_SIZE);
-          }
+          read_string_input("\nInforme o caminho relativo no qual o arquivo com os dados dos colaboradores será salvo: ", collaborators_file_relative_path, MAX_RELATIVE_PATH_SIZE);
 
           save_collaborator_data_to_file(collaborators_file_relative_path, collaborator_head);
         }
@@ -1830,10 +1759,7 @@ int main(void)
       case 2:
         if (supplier_head != NULL)
         {
-          if (strlen(suppliers_file_relative_path) > 0)
-          {
-            read_string_input("\nInforme o caminho relativo no qual o arquivo com os dados dos fornecedores será salvo: ", suppliers_file_relative_path, MAX_RELATIVE_PATH_SIZE);
-          }
+          read_string_input("\nInforme o caminho relativo no qual o arquivo com os dados dos fornecedores será salvo: ", suppliers_file_relative_path, MAX_RELATIVE_PATH_SIZE);
 
           save_supplier_data_to_file(suppliers_file_relative_path, supplier_head);
         }
@@ -1847,10 +1773,7 @@ int main(void)
       case 3:
         if (part_head != NULL)
         {
-          if (strlen(parts_file_relative_path) > 0)
-          {
-            read_string_input("\nInforme o caminho relativo no qual o arquivo com os dados das peças será salvo: ", parts_file_relative_path, MAX_RELATIVE_PATH_SIZE);
-          }
+          read_string_input("\nInforme o caminho relativo no qual o arquivo com os dados das peças será salvo: ", parts_file_relative_path, MAX_RELATIVE_PATH_SIZE);
 
           save_part_data_to_file(parts_file_relative_path, part_head);
         }
@@ -1864,10 +1787,7 @@ int main(void)
       case 4:
         if (consumer_head != NULL)
         {
-          if (strlen(consumers_file_relative_path) > 0)
-          {
-            read_string_input("\nInforme o caminho relativo no qual o arquivo com os dados dos clientes será salvo: ", consumers_file_relative_path, MAX_RELATIVE_PATH_SIZE);
-          }
+          read_string_input("\nInforme o caminho relativo no qual o arquivo com os dados dos clientes será salvo: ", consumers_file_relative_path, MAX_RELATIVE_PATH_SIZE);
 
           save_consumer_data_to_file(consumers_file_relative_path, consumer_head);
         }
