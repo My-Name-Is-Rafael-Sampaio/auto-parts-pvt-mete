@@ -3,9 +3,10 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdbool.h>
+#include <unistd.h>
 
 #define MAX_FULL_NAME_SIZE 30
-#define MAX_DATE_FORMAT_SIZE 10
+#define MAX_DATE_FORMAT_SIZE 13
 #define MAX_EMAIL_ADDRESS_SIZE 50
 #define MAX_PHONE_NUMBER_SIZE 14
 #define MAX_HOME_ADDRESS_SIZE 30
@@ -449,6 +450,7 @@ void read_string_input(const char *prompt, char *buffer, int max_length)
   }
   else
   {
+    buffer[0] = '\0';
     while (getchar() != '\n')
     {
     }
@@ -475,15 +477,27 @@ int read_integer_input(const char *prompt, int min_value, int max_value)
   return value;
 }
 
-int read_integer_input_cpf(const char *prompt, int min_value, int max_value)
+long long read_integer_input_cpf(const char *prompt, long long min_value, long long max_value)
 {
   char input[12];
-  int value;
+  long long value;
 
   while (true)
   {
     printf("%s", prompt);
     scanf("%11s", input);
+
+    if (strlen(input) != 11)
+    {
+      printf("\nValor inválido. O CPF deve ter exatamente 11 dígitos.\n");
+
+      int c;
+      while ((c = getchar()) != '\n' && c != EOF)
+      {
+      }
+
+      continue;
+    }
 
     bool valid = true;
     for (int i = 0; i < 11; i++)
@@ -497,14 +511,18 @@ int read_integer_input_cpf(const char *prompt, int min_value, int max_value)
 
     if (valid)
     {
-      value = atoi(input);
+      value = atoll(input);
       if (value >= min_value && value <= max_value)
       {
+        int c;
+        while ((c = getchar()) != '\n' && c != EOF)
+        {
+        }
         break;
       }
     }
 
-    printf("\nValor inválido. Insira um número entre %d e %d.\n", min_value, max_value);
+    printf("\nValor inválido. Insira um número entre %lld e %lld.\n", min_value, max_value);
 
     int c;
     while ((c = getchar()) != '\n' && c != EOF)
@@ -635,6 +653,7 @@ void modify_collaborator_data(Collaborator *collaborator)
     break;
   case 9:
     collaborator->total_sales_made = read_integer_input("Total de vendas do collaborator/colaborador: ", 0, 99999);
+    printf("Total de vendas modificada com sucesso!\n");
     break;
   default:
     printf("Opção inválida. Nenhuma modificação realizada.\n");
@@ -707,6 +726,10 @@ void modify_supplier_data(Supplier *supplier)
 
 void modify_part_data(Part *part, Supplier *supplier_head)
 {
+  Supplier *existing_supplier;
+
+  int supplier_id;
+
   printf("\nOpções de modificação:\n");
   printf("1 - ID do Supplier/Fornecedor\n");
   printf("2 - Nome\n");
@@ -723,9 +746,6 @@ void modify_part_data(Part *part, Supplier *supplier_head)
     printf("\nModificação cancelada.\n");
     break;
   case 1:
-    int supplier_id;
-    Supplier *existing_supplier;
-
     do
     {
       supplier_id = read_integer_input("\nID do supplier/fornecedor: ", 0, 999);
@@ -1182,134 +1202,727 @@ void read_data_consumers_file(FILE *file, Consumer **head)
   }
 }
 
-void print_menu()
+void print_default_menu()
 {
-  int choice;
-
+  printf("\n--------------------------------------------------------------------------------\n");
   printf("\n----- MENU -----\n");
-  printf("1 - Adicionar collaborator/colaborador | supplier/funcionário | part/peça | consumer/cliente\n");
-  printf("2 - Remover collaborator/colaborador | supplier/funcionário | part/peça | consumer/cliente\n");
-  printf("3 - Listar collaborator/colaborador | supplier/funcionário | part/peça | consumer/cliente\n");
-  printf("4 - Buscar collaborator/colaborador | supplier/funcionário | part/peça | consumer/cliente\n");
-  printf("5 - Salvar dados dos collaborator/colaborador | supplier/funcionário | part/peça | consumer/cliente em arquivos\n");
-  printf("0 - Sair\n");
+  printf("1 - Listar colaborador | fornecedor | peça | cliente\n");
+  printf("2 - Buscar colaborador | fornecedor | peça | cliente\n");
+  printf("3 - Adicionar colaborador | fornecedor | peça | cliente\n");
+  printf("4 - Remover colaborador | fornecedor | peça | cliente\n");
+  printf("5 - Salvar dados dos colaboradores | fornecedores | peças | clientes em arquivos\n");
+  printf("\n6 - Sair\n");
+}
 
-  choice = ("\nEscolha uma opção de modificação: ", 0, 5);
+void secondary_menu_options()
+{
+  printf("1 - Colaborador\n");
+  printf("2 - Fornecedor\n");
+  printf("3 - Peça\n");
+  printf("4 - Cliente\n");
+  printf("\n0 - Voltar\n");
+}
 
+void print_secondary_menu(int choice)
+{
   switch (choice)
   {
-  case 0:
-    printf("\nEncerrando o programa...\n");
-    break;
   case 1:
-    printf("\n----- MENU-ADICIONAR -----\n");
-    printf("1 - Collaborator/colaborador");
-    printf("2 - Supplier/funcionário");
-    printf("3 - Part/peça");
-    printf("4 - Consumer/cliente");
+    printf("\n--------------------------------------------------------------------------------\n");
+    printf("\n----- MENU LISTAR -----\n");
+    secondary_menu_options();
     break;
   case 2:
-    printf("\n----- MENU-REMOVER -----\n");
-    printf("1 - Collaborator/colaborador");
-    printf("2 - Supplier/funcionário");
-    printf("3 - Part/peça");
-    printf("4 - Consumer/cliente");
+    printf("\n--------------------------------------------------------------------------------\n");
+    printf("\n----- MENU BUSCAR -----\n");
+    secondary_menu_options();
     break;
   case 3:
-    printf("\n----- MENU-LISTAR -----\n");
-    printf("1 - Collaborator/colaborador");
-    printf("2 - Supplier/funcionário");
-    printf("3 - Part/peça");
-    printf("4 - Consumer/cliente");
+    printf("\n--------------------------------------------------------------------------------\n");
+    printf("\n----- MENU ADICIONAR -----\n");
+    secondary_menu_options();
     break;
   case 4:
-    printf("\n----- MENU-BUSCAR -----\n");
-    printf("1 - Collaborator/colaborador");
-    printf("2 - Supplier/funcionário");
-    printf("3 - Part/peça");
-    printf("4 - Consumer/cliente");
+    printf("\n--------------------------------------------------------------------------------\n");
+    printf("\n----- MENU REMOVER -----\n");
+    secondary_menu_options();
     break;
   case 5:
-    printf("\n----- MENU-SALVAR -----\n");
-    printf("1 - Collaborator/colaborador");
-    printf("2 - Supplier/funcionário");
-    printf("3 - Part/peça");
-    printf("4 - Consumer/cliente");
+    printf("\n--------------------------------------------------------------------------------\n");
+    printf("\n----- MENU SALVAR -----\n");
+    secondary_menu_options();
     break;
   default:
-    printf("Opção inválida. Nenhuma ação foi feita!.\n");
+    printf("Opção inválida. Nenhuma ação foi realizada!\n");
     break;
   }
 }
 
 int main(void)
 {
-  Node *head = NULL;
+  Collaborator *collaborator_head = NULL;
+  Supplier *supplier_head = NULL;
+  Part *part_head = NULL;
+  Consumer *consumer_head = NULL;
 
-  int choice;
-  char user_response[2];
-  char choice_file_type[15];
+  char user_response[3];
 
-  char file_relative_paths[4][MAX_RELATIVE_PATH_SIZE] = {
-      "", // collaborators
-      "", // suppliers
-      "", // parts
-      ""  // consumers
-  };
+  char file_relative_path_type[20];
+
+  char collaborators_file_relative_path[MAX_RELATIVE_PATH_SIZE];
+  char suppliers_file_relative_path[MAX_RELATIVE_PATH_SIZE];
+  char parts_file_relative_path[MAX_RELATIVE_PATH_SIZE];
+  char consumers_file_relative_path[MAX_RELATIVE_PATH_SIZE];
+
+  int choice_default_menu;
+  int choice_secondary_menu;
+
+  int collaborator_id;
+  Collaborator *existing_collaborator;
+  Collaborator *collaborator_to_remove;
+
+  int supplier_id;
+  Supplier *existing_supplier;
+  Supplier *supplier_to_remove;
+
+  int part_id;
+  Part *existing_part;
+  Part *part_to_remove;
+
+  int consumer_id;
+  Consumer *existing_consumer;
+  Consumer *consumer_to_remove;
+
+  int modify_choice;
 
   printf("\n----- BEM-VINDO AO SISTEMA AUTO PEÇAS PVT METE! -----\n");
-  printf("\nVocê pode informar o caminho relativo dos seguintes arquivos: collaborators.txt | suppliers.txt | parts.txt | consumers.txt\n");
 
   do
   {
-    read_string_input("\nDeseja informar o caminho relativo do arquivo? (s/n): ", user_response, sizeof(user_response));
+    read_string_input("\nDeseja informar o caminho relativo do arquivo? (s/n): ", user_response, 3);
 
     if (tolower(user_response[0]) != 's' && tolower(user_response[0]) != 'n')
     {
       printf("\nOpção inválida. Por favor, escolha uma opção válida (s/n).\n");
     }
-    else if (tolower(user_response[0]) == 's')
+    else
     {
-      read_string_input("\nDeseja informar o caminho relativo de qual arquivo? ", choice_file_type, sizeof(choice_file_type));
+      if (tolower(user_response[0]) == 's')
+      {
+        read_string_input("\nEscolha uma das opções (colaboradores | fornecedores | peças | clientes | todos): ", file_relative_path_type, 20);
 
-      int struct_type = -1;
-
-      if (strcmp(choice_file_type, "collaborators") == 0 || strcmp(choice_file_type, "colaboradores") == 0)
-      {
-        struct_type = 1;
-      }
-      else if (strcmp(choice_file_type, "suppliers") == 0 || strcmp(choice_file_type, "fornecedores") == 0)
-      {
-        struct_type = 2;
-      }
-      else if (strcmp(choice_file_type, "parts") == 0 || strcmp(choice_file_type, "peças") == 0)
-      {
-        struct_type = 3;
-      }
-      else if (strcmp(choice_file_type, "consumers") == 0 || strcmp(choice_file_type, "consumidores") == 0)
-      {
-        struct_type = 4;
-      }
-
-      if (struct_type != -1)
-      {
-        char relative_path[MAX_RELATIVE_PATH_SIZE];
-        read_string_input("\nCaminho relativo do arquivo de dados: ", relative_path, sizeof(relative_path));
-        strcpy(file_relative_paths[struct_type], relative_path);
-
-        FILE *file = fopen(relative_path, "r");
-        if (file != NULL)
+        if (strcmp(file_relative_path_type, "colaboradores") == 0)
         {
-          read_data_from_file(file, &head, struct_type);
-          fclose(file);
+          read_string_input("\nInforme o caminho relativo do arquivo de dados dos colaboradores: ", collaborators_file_relative_path, MAX_RELATIVE_PATH_SIZE);
+
+          FILE *collaborators_file = fopen(collaborators_file_relative_path, "r");
+          if (collaborators_file != NULL)
+          {
+            read_data_collaborators_file(collaborators_file, &collaborator_head);
+            fclose(collaborators_file);
+          }
         }
-      }
-      else
-      {
-        printf("\nTipo de arquivo inválido. Por favor, escolha uma opção válida.\n");
+        else if (strcmp(file_relative_path_type, "fornecedores") == 0)
+        {
+          read_string_input("\nInforme o caminho relativo do arquivo de dados dos fornecedores: ", suppliers_file_relative_path, MAX_RELATIVE_PATH_SIZE);
+
+          FILE *suppliers_file = fopen(suppliers_file_relative_path, "r");
+          if (suppliers_file != NULL)
+          {
+            read_data_suppliers_file(suppliers_file, &supplier_head);
+            fclose(suppliers_file);
+          }
+        }
+        else if (strcmp(file_relative_path_type, "peças") == 0)
+        {
+          read_string_input("\nInforme o caminho relativo do arquivo de dados das peças: ", parts_file_relative_path, MAX_RELATIVE_PATH_SIZE);
+
+          FILE *parts_file = fopen(parts_file_relative_path, "r");
+          if (parts_file != NULL)
+          {
+            read_data_parts_file(parts_file, &part_head);
+            fclose(parts_file);
+          }
+        }
+        else if (strcmp(file_relative_path_type, "clientes") == 0)
+        {
+          read_string_input("\nInforme o caminho relativo do arquivo de dados dos clientes: ", consumers_file_relative_path, MAX_RELATIVE_PATH_SIZE);
+
+          FILE *consumers_file = fopen(consumers_file_relative_path, "r");
+          if (consumers_file != NULL)
+          {
+            read_data_consumers_file(consumers_file, &consumer_head);
+            fclose(consumers_file);
+          }
+        }
+        else if (strcmp(file_relative_path_type, "todos") == 0)
+        {
+          read_string_input("\nInforme o caminho relativo do arquivo de dados dos colaboradores: ", collaborators_file_relative_path, MAX_RELATIVE_PATH_SIZE);
+          read_string_input("\nInforme o caminho relativo do arquivo de dados dos fornecedores: ", suppliers_file_relative_path, MAX_RELATIVE_PATH_SIZE);
+          read_string_input("\nInforme o caminho relativo do arquivo de dados das peças: ", parts_file_relative_path, MAX_RELATIVE_PATH_SIZE);
+          read_string_input("\nInforme o caminho relativo do arquivo de dados dos clientes: ", consumers_file_relative_path, MAX_RELATIVE_PATH_SIZE);
+
+          FILE *collaborators_file = fopen(collaborators_file_relative_path, "r");
+          if (collaborators_file != NULL)
+          {
+            read_data_collaborators_file(collaborators_file, &collaborator_head);
+            fclose(collaborators_file);
+          }
+
+          FILE *suppliers_file = fopen(suppliers_file_relative_path, "r");
+          if (suppliers_file != NULL)
+          {
+            read_data_suppliers_file(suppliers_file, &supplier_head);
+            fclose(suppliers_file);
+          }
+
+          FILE *parts_file = fopen(parts_file_relative_path, "r");
+          if (parts_file != NULL)
+          {
+            read_data_parts_file(parts_file, &part_head);
+            fclose(parts_file);
+          }
+
+          FILE *consumers_file = fopen(consumers_file_relative_path, "r");
+          if (consumers_file != NULL)
+          {
+            read_data_consumers_file(consumers_file, &consumer_head);
+            fclose(consumers_file);
+          }
+        }
       }
     }
   } while (tolower(user_response[0]) != 's' && tolower(user_response[0]) != 'n');
+
+  do
+  {
+    print_default_menu();
+    choice_default_menu = read_integer_input("\nEscolha uma opção: ", 1, 6);
+
+    switch (choice_default_menu)
+    {
+    case 1:
+      print_secondary_menu(choice_default_menu);
+      choice_secondary_menu = read_integer_input("\nEscolha uma opção: ", 0, 4);
+
+      switch (choice_secondary_menu)
+      {
+      case 0:
+        printf("\nRetornando...\n");
+        break;
+      case 1:
+        if (is_file_empty(collaborators_file_relative_path) || collaborator_head != NULL)
+        {
+          list_all_collaborators(collaborator_head);
+        }
+        else
+        {
+          printf("\nO arquivo/lista está vazia e/ou não esxiste.\n");
+        }
+
+        sleep(2);
+        break;
+      case 2:
+        if (is_file_empty(suppliers_file_relative_path) || supplier_head != NULL)
+        {
+          list_all_suppliers(supplier_head);
+        }
+        else
+        {
+          printf("\nO arquivo/lista está vazia e/ou não esxiste.\n");
+        }
+
+        sleep(2);
+        break;
+      case 3:
+        if (is_file_empty(parts_file_relative_path) || part_head != NULL)
+        {
+          list_all_parts(part_head);
+        }
+        else
+        {
+          printf("\nO arquivo/lista está vazia e/ou não esxiste.\n");
+        }
+
+        sleep(2);
+        break;
+      case 4:
+        if (is_file_empty(consumers_file_relative_path) || consumer_head != NULL)
+        {
+          list_all_consumers(consumer_head);
+        }
+        else
+        {
+          printf("\nO arquivo/lista está vazia e/ou não esxiste.\n");
+        }
+
+        sleep(2);
+        break;
+      default:
+        printf("Opção inválida. Por favor, escolha uma opção válida.\n");
+        break;
+      }
+      break;
+    case 2:
+      print_secondary_menu(choice_default_menu);
+      choice_secondary_menu = read_integer_input("\nEscolha uma opção: ", 0, 4);
+
+      switch (choice_secondary_menu)
+      {
+      case 0:
+        printf("\nRetornando...\n");
+        break;
+      case 1:
+        collaborator_id = read_integer_input("\nInforme o ID do colaborador: ", 0, 999);
+        existing_collaborator = find_collaborator_by_id(collaborator_head, collaborator_id);
+        if (existing_collaborator != NULL)
+        {
+          print_collaborator_details(existing_collaborator, 0);
+
+          modify_choice = read_integer_input("\nDeseja modificar os dados deste colaborador? (1 - Sim, 2 - Não): ", 1, 2);
+
+          if (modify_choice == 1)
+          {
+            modify_collaborator_data(existing_collaborator);
+          }
+        }
+        else
+        {
+          printf("\nNenhum colaborador encontrado com o ID informada.\n");
+        }
+
+        sleep(2);
+        break;
+      case 2:
+        supplier_id = read_integer_input("\nInforme o ID do fornecedor: ", 0, 999);
+        existing_supplier = find_supplier_by_id(supplier_head, supplier_id);
+        if (existing_supplier != NULL)
+        {
+          print_supplier_details(existing_supplier, 0);
+
+          modify_choice = read_integer_input("\nDeseja modificar os dados deste fornecedor? (1 - Sim, 2 - Não): ", 1, 2);
+
+          if (modify_choice == 1)
+          {
+            modify_supplier_data(existing_supplier);
+          }
+        }
+        else
+        {
+          printf("\nNenhum fornecedor encontrado com o ID informada.\n");
+        }
+
+        sleep(2);
+        break;
+      case 3:
+        part_id = read_integer_input("\nInforme o ID da peça: ", 0, 999);
+        existing_part = find_part_by_id(part_head, part_id);
+        if (existing_part != NULL)
+        {
+          print_part_details(existing_part, 0);
+
+          modify_choice = read_integer_input("\nDeseja modificar os dados desta peça? (1 - Sim, 2 - Não): ", 1, 2);
+
+          if (modify_choice == 1)
+          {
+            modify_part_data(existing_part, supplier_head);
+          }
+        }
+        else
+        {
+          printf("\nNenhum peça encontrado com o ID informada.\n");
+        }
+
+        sleep(2);
+        break;
+      case 4:
+        consumer_id = read_integer_input("\nInforme o ID do cliente: ", 0, 999);
+        existing_consumer = find_consumer_by_id(consumer_head, consumer_id);
+        if (existing_part != NULL)
+        {
+          print_consumer_details(existing_part, 0);
+
+          modify_choice = read_integer_input("\nDeseja modificar os dados desta peça? (1 - Sim, 2 - Não): ", 1, 2);
+
+          if (modify_choice == 1)
+          {
+            modify_consumer_data(existing_part);
+          }
+        }
+        else
+        {
+          printf("\nNenhum peça encontrado com o ID informada.\n");
+        }
+
+        sleep(2);
+        break;
+      default:
+        printf("Opção inválida. Por favor, escolha uma opção válida.\n");
+        break;
+      }
+      break;
+    case 3:
+      print_secondary_menu(choice_default_menu);
+      choice_secondary_menu = read_integer_input("\nEscolha uma opção: ", 0, 4);
+
+      switch (choice_secondary_menu)
+      {
+      case 0:
+        printf("\nRetornando...\n");
+        break;
+      case 1:
+        printf("\n----- ENTRADA DE DADOS -----\n");
+
+        do
+        {
+          collaborator_id = read_integer_input("\nInforme o ID do colaborador: ", 0, 999);
+          existing_collaborator = find_collaborator_by_id(collaborator_head, collaborator_id);
+
+          if (existing_collaborator != NULL)
+          {
+            printf("\nO ID informado já existe. Insira um ID válido!\n");
+          }
+        } while (existing_collaborator != NULL);
+
+        Collaborator *new_collaborator = create_collaborator_node();
+
+        new_collaborator->id = collaborator_id;
+        new_collaborator->cpf = read_integer_input_cpf("\nInforme o CPF do colaborador: ", 0, 99999999999);
+        read_string_input("\nInforme o nome completo do colaborador: ", new_collaborator->full_name, MAX_FULL_NAME_SIZE);
+        read_string_input("\nInforme a data de nascimento do colaborador: ", new_collaborator->date_birth, MAX_DATE_FORMAT_SIZE);
+        read_string_input("\nInforme o e-mail do colaborador: ", new_collaborator->email_address, MAX_EMAIL_ADDRESS_SIZE);
+        read_string_input("\nInforme o telefone de contato do colaborador: ", new_collaborator->phone_number, MAX_PHONE_NUMBER_SIZE);
+        read_string_input("\nInforme o endereço residencial do colaborador: ", new_collaborator->home_address, MAX_HOME_ADDRESS_SIZE);
+        read_string_input("\nInforme o cargo do colaborador: ", new_collaborator->office, MAX_OFFICE_SIZE);
+        new_collaborator->salary = read_double_input("\nInforme o salário do colaborador: ", 0.0, 99999.99);
+        new_collaborator->total_sales_made = read_integer_input("\nInfome a quantidade de vendas do colaborador: ", 0, 99999);
+
+        insert_collaborator_in_list(&collaborator_head, new_collaborator);
+
+        printf("\nColaborador adicionado com sucesso!\n");
+
+        sleep(2);
+        break;
+      case 2:
+        printf("\n----- ENTRADA DE DADOS -----\n");
+
+        do
+        {
+          supplier_id = read_integer_input("\nInforme o ID do fornecedor: ", 0, 999);
+          existing_supplier = find_supplier_by_id(supplier_head, supplier_id);
+
+          if (existing_supplier != NULL)
+          {
+            printf("\nO ID informado já existe. Insira um ID válido!\n");
+          }
+        } while (existing_supplier != NULL);
+
+        Supplier *new_supplier = create_supplier_node();
+
+        new_supplier->id = supplier_id;
+        new_supplier->cnpj = read_integer_input_cnpj("\nInforme o CNPJ do fornecedor: ", 0, 99999999999999);
+        read_string_input("\nInforme o nome completo do fornecedor: ", new_supplier->full_name, MAX_FULL_NAME_SIZE);
+        read_string_input("\nInforme a categotia da peça: ", new_supplier->part_category, MAX_PART_CATEGORY_SIZE);
+        read_string_input("\nInforme o e-mail do fornecedor: ", new_supplier->email_address, MAX_EMAIL_ADDRESS_SIZE);
+        read_string_input("\nInforme o telefone de contato do fornecedor: ", new_supplier->phone_number, MAX_PHONE_NUMBER_SIZE);
+        read_string_input("\nInforme o endereço comercial do fornecedor: ", new_supplier->business_address, MAX_BUSINESS_ADDRESS_SIZE);
+        read_string_input("\nInforme a data da assinatura do contrato: ", new_supplier->contract_date, MAX_DATE_FORMAT_SIZE);
+        new_supplier->contract_price = read_double_input("\nInforme o valor do contrato: ", 0.0, 99999.99);
+
+        insert_supplier_in_list(&supplier_head, new_supplier);
+
+        printf("\nFornecedor adicionado com sucesso!\n");
+
+        sleep(2);
+        break;
+      case 3:
+        printf("\n----- ENTRADA DE DADOS -----\n");
+
+        do
+        {
+          part_id = read_integer_input("\nInforme o ID da peça: ", 0, 999);
+          existing_part = find_part_by_id(part_head, part_id);
+
+          if (existing_part != NULL)
+          {
+            printf("\nO ID informado já existe. Insira um ID válido!\n");
+          }
+        } while (existing_part != NULL);
+
+        Part *new_part = create_part_node();
+
+        new_part->id = part_id;
+
+        int count = 0;
+
+        do
+        {
+          supplier_id = read_integer_input("\nInforme o ID do fornecedor: ", 0, 999);
+          existing_supplier = find_supplier_by_id(supplier_head, supplier_id);
+
+          if (existing_supplier == NULL)
+          {
+            printf("\nNão existe fornecedor com esse ID. Adicione um ou insira um ID válido!\n");
+          }
+
+          count++;
+
+          if (count == 10)
+          {
+            printf("\nNúmero de tentativas inválidas atingidas!\n");
+            sleep(2);
+            break;
+          }
+
+        } while (existing_supplier == NULL);
+
+        new_part->supplier_id = supplier_id;
+        read_string_input("\nInforme o nome da peça: ", new_part->full_name, MAX_FULL_NAME_SIZE);
+        read_string_input("\nInforme o modelo do carro: ", new_part->car_model, MAX_CAR_MODEL_SIZE);
+        new_part->amount = read_integer_input("\nInforme a quantidade: ", 1, 99999);
+        new_part->price = read_double_input("\nInforme o valor da peça: ", 1.1, 99999.99);
+
+        insert_part_in_list(&part_head, new_part);
+
+        printf("\nPeça adicionada com sucesso!\n");
+
+        sleep(2);
+        break;
+      case 4:
+        printf("\n----- ENTRADA DE DADOS -----\n");
+
+        do
+        {
+          consumer_id = read_integer_input("\nInforme o ID do cliente: ", 0, 999);
+          existing_consumer = find_consumer_by_id(consumer_head, consumer_id);
+
+          if (existing_consumer != NULL)
+          {
+            printf("\nO ID informado já existe. Insira um ID válido!\n");
+          }
+        } while (existing_consumer != NULL);
+
+        Consumer *new_consumer = create_consumer_node();
+
+        new_consumer->id = consumer_id;
+        new_consumer->cpf = read_integer_input_cpf("\nInforme o CPF do cliente: ", 0, 99999999999);
+        read_string_input("\nInforme o nome completo do cliente: ", new_consumer->full_name, MAX_FULL_NAME_SIZE);
+        read_string_input("\nInforme a data de nascimento do cliente: ", new_consumer->date_birth, MAX_DATE_FORMAT_SIZE);
+        read_string_input("\nInforme o e-mail do cliente: ", new_consumer->email_address, MAX_EMAIL_ADDRESS_SIZE);
+        read_string_input("\nInforme o telefone de contato do cliente: ", new_consumer->phone_number, MAX_PHONE_NUMBER_SIZE);
+        read_string_input("\nInforme o endereço residencial do cliente: ", new_consumer->home_address, MAX_HOME_ADDRESS_SIZE);
+
+        insert_consumer_in_list(&consumer_head, new_consumer);
+
+        printf("\nCliente adicionado com sucesso!\n");
+
+        sleep(2);
+        break;
+      default:
+        printf("Opção inválida. Por favor, escolha uma opção válida.\n");
+        break;
+      }
+      break;
+    case 4:
+      print_secondary_menu(choice_default_menu);
+      choice_secondary_menu = read_integer_input("\nEscolha uma opção: ", 0, 4);
+
+      switch (choice_secondary_menu)
+      {
+      case 0:
+        printf("\nRetornando...\n");
+        break;
+      case 1:
+        collaborator_id = read_integer_input("\nInforme o ID do colaborador a ser removido: ", 0, 999);
+        collaborator_to_remove = find_collaborator_by_id(collaborator_head, collaborator_id);
+
+        if (collaborator_to_remove != NULL)
+        {
+          remove_collaborator(&collaborator_head, collaborator_to_remove);
+          printf("\nColaborador removido com sucesso!\n");
+        }
+        else
+        {
+          printf("\nNenhum colaborador encontrado com o ID informado.\n");
+        }
+
+        sleep(2);
+        break;
+      case 2:
+        supplier_id = read_integer_input("\nInforme o ID do fornecedor a ser removido: ", 0, 999);
+        supplier_to_remove = find_supplier_by_id(supplier_head, supplier_id);
+
+        if (supplier_to_remove != NULL)
+        {
+          remove_supplier(&supplier_head, supplier_to_remove);
+          printf("\nFornecedor removido com sucesso!\n");
+        }
+        else
+        {
+          printf("\nNenhum fornecedor encontrado com o ID informado.\n");
+        }
+
+        sleep(2);
+        break;
+      case 3:
+        part_id = read_integer_input("\nInforme o ID da peça a ser removida: ", 0, 999);
+        part_to_remove = find_part_by_id(part_head, part_id);
+
+        if (part_to_remove != NULL)
+        {
+          remove_part(&part_head, part_to_remove);
+          printf("\nPeça removida com sucesso!\n");
+        }
+        else
+        {
+          printf("\nNenhuma peça encontrada com o ID informado.\n");
+        }
+
+        sleep(2);
+        break;
+      case 4:
+        consumer_id = read_integer_input("\nInforme o ID do cliente a ser removido: ", 0, 999);
+        consumer_to_remove = find_consumer_by_id(consumer_head, consumer_id);
+
+        if (consumer_to_remove != NULL)
+        {
+          remove_consumer(&consumer_head, consumer_to_remove);
+          printf("\nCliente removido com sucesso!\n");
+        }
+        else
+        {
+          printf("\nNenhum cliente encontrado com o ID informado.\n");
+        }
+
+        sleep(2);
+        break;
+      default:
+        printf("Opção inválida. Por favor, escolha uma opção válida.\n");
+        break;
+      }
+      break;
+    case 5:
+      print_secondary_menu(choice_default_menu);
+      choice_secondary_menu = read_integer_input("\nEscolha uma opção: ", 0, 4);
+
+      switch (choice_secondary_menu)
+      {
+      case 0:
+        printf("\nRetornando...\n");
+        break;
+      case 1:
+        if (collaborator_head != NULL)
+        {
+          if (strlen(collaborators_file_relative_path) > 0)
+          {
+            read_string_input("\nInforme o caminho relativo no qual o arquivo com os dados dos colaboradores será salvo: ", collaborators_file_relative_path, MAX_RELATIVE_PATH_SIZE);
+          }
+
+          save_collaborator_data_to_file(collaborators_file_relative_path, collaborator_head);
+        }
+        else
+        {
+          printf("\nErro! Nenhum colaborador foi cadastrado e/ou carregado.\n");
+        }
+
+        sleep(2);
+        break;
+      case 2:
+        if (supplier_head != NULL)
+        {
+          if (strlen(suppliers_file_relative_path) > 0)
+          {
+            read_string_input("\nInforme o caminho relativo no qual o arquivo com os dados dos fornecedores será salvo: ", suppliers_file_relative_path, MAX_RELATIVE_PATH_SIZE);
+          }
+
+          save_supplier_data_to_file(suppliers_file_relative_path, supplier_head);
+        }
+        else
+        {
+          printf("\nErro! Nenhum fornecedor foi cadastrado e/ou carregado.\n");
+        }
+
+        sleep(2);
+        break;
+      case 3:
+        if (part_head != NULL)
+        {
+          if (strlen(parts_file_relative_path) > 0)
+          {
+            read_string_input("\nInforme o caminho relativo no qual o arquivo com os dados das peças será salvo: ", parts_file_relative_path, MAX_RELATIVE_PATH_SIZE);
+          }
+
+          save_part_data_to_file(parts_file_relative_path, part_head);
+        }
+        else
+        {
+          printf("\nErro! Nenhuma peça foi cadastrado e/ou carregado.\n");
+        }
+
+        sleep(2);
+        break;
+      case 4:
+        if (consumer_head != NULL)
+        {
+          if (strlen(consumers_file_relative_path) > 0)
+          {
+            read_string_input("\nInforme o caminho relativo no qual o arquivo com os dados dos clientes será salvo: ", consumers_file_relative_path, MAX_RELATIVE_PATH_SIZE);
+          }
+
+          save_consumer_data_to_file(consumers_file_relative_path, consumer_head);
+        }
+        else
+        {
+          printf("\nErro! Nenhum cliente foi cadastrado e/ou carregado.\n");
+        }
+
+        sleep(2);
+        break;
+      default:
+        printf("Opção inválida. Por favor, escolha uma opção válida.\n");
+        break;
+      }
+      break;
+    case 6:
+      printf("\nEncerrando o programa...\n");
+      break;
+    default:
+      printf("Opção inválida. Por favor, escolha uma opção válida.\n");
+      break;
+    }
+  } while (choice_default_menu != 6);
+
+  Collaborator *current_Collaborator = collaborator_head;
+  while (current_Collaborator != NULL)
+  {
+    Collaborator *temp_Collaborator = current_Collaborator;
+    current_Collaborator = current_Collaborator->next;
+    free(temp_Collaborator);
+  }
+
+  Supplier *current_supplier = supplier_head;
+  while (current_supplier != NULL)
+  {
+    Supplier *temp_supplier = current_supplier;
+    current_supplier = current_supplier->next;
+    free(temp_supplier);
+  }
+
+  Part *current_part = part_head;
+  while (current_part != NULL)
+  {
+    Part *temp_part = current_part;
+    current_part = current_part->next;
+    free(temp_part);
+  }
+
+  Consumer *current_consumer = consumer_head;
+  while (current_consumer != NULL)
+  {
+    Consumer *temp_consumer = current_consumer;
+    current_consumer = current_consumer->next;
+    free(temp_consumer);
+  }
 
   return 0;
 }
